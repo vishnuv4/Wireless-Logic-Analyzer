@@ -133,11 +133,11 @@ static void StartTasks(void) {
     snprintf(bufferPrint, 64, "Heap after starting WIFI: %d\r\n", xPortGetFreeHeapSize());
     SerialConsoleWriteString(bufferPrint);
 	
-	if (xTaskCreate(vAdcSpiTask, "ADC_SPI_TASK", ADC_SPI_TASK_SIZE, NULL, ADC_SPI_PRIORITY, &adcSpiTaskHandle) != pdPASS) {
+	/*if (xTaskCreate(vAdcSpiTask, "ADC_SPI_TASK", ADC_SPI_TASK_SIZE, NULL, ADC_SPI_PRIORITY, &adcSpiTaskHandle) != pdPASS) {
 		SerialConsoleWriteString("ERR: ADC SPI task could not be initialized!\r\n");
 	}
 	snprintf(bufferPrint, 64, "Heap after starting SPI: %d\r\n", xPortGetFreeHeapSize());
-	SerialConsoleWriteString(bufferPrint);
+	SerialConsoleWriteString(bufferPrint);*/
 	
 }
 
