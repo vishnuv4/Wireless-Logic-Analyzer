@@ -35,16 +35,22 @@ uint8_t mcp23017_read_gpio(void) {
 }
 
 void mcp23017_print_button(uint8_t gpio_state) {
+	char message[50];
+
 	if (!(gpio_state & (1 << SPI_BUTTON))) {
-		SerialConsoleWriteString("SPI Button pressed\n");
+		snprintf(message, sizeof(message), "SPI Button pressed\r\n");
+		SerialConsoleWriteString(message);
 	}
 	if (!(gpio_state & (1 << UART_BUTTON))) {
-		SerialConsoleWriteString("UART Button pressed\n");
+		snprintf(message, sizeof(message), "UART Button pressed\r\n");
+		SerialConsoleWriteString(message);
 	}
 	if (!(gpio_state & (1 << I2C_BUTTON))) {
-		SerialConsoleWriteString("I2C Button pressed\n");
+		snprintf(message, sizeof(message), "I2C Button pressed\r\n");
+		SerialConsoleWriteString(message);
 	}
 	if (!(gpio_state & (1 << GPIO_BUTTON))) {
-		SerialConsoleWriteString("GPIO Button pressed\n");
+		snprintf(message, sizeof(message), "GPIO Button pressed\r\n");
+		SerialConsoleWriteString(message);
 	}
 }
