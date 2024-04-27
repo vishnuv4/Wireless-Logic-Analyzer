@@ -9,6 +9,7 @@
 #include "main.h"
 #include "stdio_serial.h"
 #include "ssd1306.h" 
+#include "mcp23017_samw25.h"
 #define DISPLAY_TASK_STACK_SIZE (512U)
 static uint8_t SSD1306_Buffer[SSD1306_WIDTH * SSD1306_HEIGHT / 8];
 /****
@@ -17,7 +18,7 @@ static uint8_t SSD1306_Buffer[SSD1306_WIDTH * SSD1306_HEIGHT / 8];
 #define APP_TASK_ID 0
 #define CLI_TASK_ID 1
 
-
+#define LED_PIN PIN_PA23
 /****
  * Local Function Declaration
  ****/
@@ -27,9 +28,9 @@ void vApplicationDaemonTaskStartupHook(void);
 void vApplicationMallocFailedHook(void);
 void vApplicationStackOverflowHook(void);
 void vApplicationTickHook(void);
-
+static void ButtonReadTask(void *pvParameters);
 static void DisplayTask(void *pvParameters);  // Task to update SSD1306 display
-
+void toggleLED(bool state);
 /****
  * Variables
  ****/
@@ -74,8 +75,13 @@ static void StartTasks(void) {
 	if (xTaskCreate(vCommandConsoleTask, "CLI_TASK", CLI_TASK_SIZE, NULL, CLI_PRIORITY, &cliTaskHandle) != pdPASS) {
 		SerialConsoleWriteString("ERR: CLI task could not be initialized!\r\n");
 	}
+	
+	 if (xTaskCreate(ButtonReadTask, "BUTTON_READ_TASK", 400, NULL, 5, NULL) != pdPASS) {
+		 SerialConsoleWriteString("ERR: Button Read task could not be initialized!\r\n");
+	 }
 
-	if (xTaskCreate(DisplayTask, "DISPLAY_TASK", DISPLAY_TASK_STACK_SIZE, NULL, 10, &displayTaskHandle) != pdPASS) {
+
+	if (xTaskCreate(DisplayTask, "DISPLAY_TASK", DISPLAY_TASK_STACK_SIZE, NULL, 3, &displayTaskHandle) != pdPASS) {
 		SerialConsoleWriteString("ERR: Display task could not be initialized!\r\n");
 	}
 
@@ -87,7 +93,6 @@ static void StartTasks(void) {
 }
 
 static void DisplayTask(void *pvParameters) {
-	// Initialization moved to vApplicationDaemonTaskStartupHook
 	while (1) {
 		SerialConsoleWriteString("Updating display...\r\n");
 		SSD1306_Fill(SSD1306_COLOR_BLACK);
@@ -101,6 +106,30 @@ static void DisplayTask(void *pvParameters) {
 	}
 }
 
+static void ButtonReadTask(void *pvParameters) {
+	// Initialize MCP23017 port expander
+	mcp23017_init();
+
+	while (1) {
+		// Read button states
+		uint8_t gpio_state = mcp23017_read_gpio();
+
+		// Print messages if buttons are pressed
+		mcp23017_print_button(gpio_state);
+
+		// Toggle LED based on button press
+		if (gpio_state != 0xFF) { // Assuming 0xFF means no button press
+			toggleLED(true);
+		} else {
+			toggleLED(false);
+		}
+
+		// Add a delay to debounce the buttons and limit the read frequency
+		vTaskDelay(pdMS_TO_TICKS(200));
+	}
+}
+
+
 void vApplicationMallocFailedHook(void) {
     SerialConsoleWriteString("Error on memory allocation on FREERTOS!\r\n");
     while (1);
@@ -113,3 +142,6 @@ void vApplicationStackOverflowHook(void) {
 
 void vApplicationTickHook(void) { SysTick_Handler_MQTT(); }
 
+void toggleLED(bool state) {
+	port_pin_set_output_level(LED_PIN, state);
+}
