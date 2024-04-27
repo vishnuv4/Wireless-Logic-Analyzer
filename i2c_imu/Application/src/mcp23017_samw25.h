@@ -11,10 +11,10 @@
 #define MCP23017_ADDRESS 0x20 // Address with A2, A1, A0 to GND
 
 // Button defines
-#define SPI_BUTTON 5
-#define UART_BUTTON 6
-#define I2C_BUTTON 7
-#define GPIO_BUTTON 4
+#define SPI_BUTTON 1   // GPA0
+#define I2C_BUTTON 3   // GPA1
+#define UART_BUTTON 2  // GPA2
+#define GPIO_BUTTON 0  // GPA0
 
 void mcp23017_init(void);
 uint8_t mcp23017_read_gpio(void);
