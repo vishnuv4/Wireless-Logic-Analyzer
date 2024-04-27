@@ -39,23 +39,35 @@ uint8_t mcp23017_read_gpio(void) {
 
 // Print messages for button presses
 void mcp23017_print_button(uint8_t gpio_state) {
-    char message[50];
+	char message[50]; // Define a character array to store the message
 
-    // Check and print for each button; assume active low configuration
-    if (!(gpio_state & (1 << SPI_BUTTON))) {
-        snprintf(message, sizeof(message), "SPI Button pressed\r\n");
-        SerialConsoleWriteString(message);
-    }
-    if (!(gpio_state & (1 << UART_BUTTON))) {
-        snprintf(message, sizeof(message), "UART Button pressed\r\n");
-        SerialConsoleWriteString(message);
-    }
-    if (!(gpio_state & (1 << I2C_BUTTON))) {
-        snprintf(message, sizeof(message), "I2C Button pressed\r\n");
-        SerialConsoleWriteString(message);
-    }
-    if (!(gpio_state & (1 << GPIO_BUTTON))) {
-        snprintf(message, sizeof(message), "GPIO Button pressed\r\n");
-        SerialConsoleWriteString(message);
-    }
+	// Check and print for each button; assume active low configuration
+	// Check if the SPI button is pressed (bit position SPI_BUTTON)
+	if (!(gpio_state & (1 << SPI_BUTTON))) {
+		// If SPI button is pressed, format the message and write it to serial console
+		snprintf(message, sizeof(message), "SPI Button pressed\r\n");
+		SerialConsoleWriteString(message);
+	}
+
+	// Check if the UART button is pressed (bit position UART_BUTTON)
+	if (!(gpio_state & (1 << UART_BUTTON))) {
+		// If UART button is pressed, format the message and write it to serial console
+		snprintf(message, sizeof(message), "UART Button pressed\r\n");
+		SerialConsoleWriteString(message);
+	}
+
+	// Check if the I2C button is pressed (bit position I2C_BUTTON)
+	if (!(gpio_state & (1 << I2C_BUTTON))) {
+		// If I2C button is pressed, format the message and write it to serial console
+		snprintf(message, sizeof(message), "I2C Button pressed\r\n");
+		SerialConsoleWriteString(message);
+	}
+
+	// Check if the GPIO button is pressed (bit position GPIO_BUTTON)
+	if (!(gpio_state & (1 << GPIO_BUTTON))) {
+		// If GPIO button is pressed, format the message and write it to serial console
+		snprintf(message, sizeof(message), "GPIO Button pressed\r\n");
+		SerialConsoleWriteString(message);
+	}
 }
+
