@@ -1,19 +1,11 @@
-# a14g-final-submission
+# Wireless Logic Analyzer
 
-    * Team Number: 6
-    * Team Name: Logic Ninjas
-    * Team Members: Vishnu Venkatesh and Yadnik Bendale
-    * Github Repository URL: [https://github.com/ese5160/ec01g-mcad-model-t06-logic-ninjas/tree/main](https://github.com/ese5160/a14g-final-submission-t06-logic-ninjas)
-    * Description of test hardware: PCBA, SAMW25
-
+Developed by Vishnu Venkatesh, Yadnik Bendale
 
 ## 1. Video Presentation
 
 Link to video presentation of video: 
 [Video Demonstration](https://youtu.be/Bzsq5E1G8jM)
-
-Video Credits: Maryam Ali
-
 
 ## 2. Project Summary
 
