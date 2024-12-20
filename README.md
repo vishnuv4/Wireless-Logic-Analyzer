@@ -1,4 +1,4 @@
-# Wireless Logic Analyzer
+# Project Overview
 
 Developed by Vishnu Venkatesh, Yadnik Bendale
 
